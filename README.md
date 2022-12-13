@@ -29,3 +29,18 @@
 knnlnn
 
 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - uses: sonarsource/sonarqube-scan-action@v1.1.0
+        with:
+          # The URL of your local SonarQube server
+          sonarqube-host-url: http://localhost:9000
+          # The token used to authenticate with the SonarQube server
+          sonarqube-token: ${{ secrets.SONARQUBE_TOKEN }}
+
+
