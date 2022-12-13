@@ -1,0 +1,14 @@
+name: SonarQube Analysis
+
+on: [push]
+
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: SonarQube Analysis
+      uses: sonarsource/sonarqube-github-action@master
+      with:
+        sonarqube_scanner_version: 4.7.0.2747
+        extra_properties: "-Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}"
