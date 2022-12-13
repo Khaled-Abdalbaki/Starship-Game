@@ -1,14 +1,16 @@
 name: SonarQube Analysis
-
 on: [push]
-
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: SonarQube Analysis
-      uses:  Khaled-Abdalbaki/Starship-Game 
-      with:
-        sonarqube_scanner_version: 4.7.0.2747
-        extra_properties: "-Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}"
+
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    
+    - name: SonarQube Quality Gate Check
+      uses: SonarSource/sonarqube-quality-gate-action@v1.0.0
