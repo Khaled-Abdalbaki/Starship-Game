@@ -1,16 +1,23 @@
-name: SonarQube Analysis
-on: [push]
+name: Build
+on:
+  push:
+    branches:
+      - master # or the name of your main branch
 jobs:
-  sonarqube:
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-
-    - uses: actions/analysis-scanner
-      with:
-          # The URL of your SonarQube server
-          sonarqube-host-url: ${{ secrets.SONAR_HOST_URL }}
-          # The token used to authenticate with the SonarQube server
-          sonarqube-token: ${{ secrets.SONAR_TOKEN }}
-    - name: SonarQube Quality Gate Check
-      uses: SonarSource/sonarqube-quality-gate-action@v1.0.0
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      # If you wish to fail your job when the Quality Gate is red, uncomment the
+      # following lines. This would typically be used to fail a deployment.
+      # - uses: sonarsource/sonarqube-quality-gate-action@master
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
